@@ -1,0 +1,102 @@
+# This is the pattern configuration file
+# It should always be names config.yml and reside in the
+# directory holding your pattern
+
+# Setting the hidden option below to true will hide this pattern
+# from the info service (and thus from the front end)
+# To reveal a pattern, you can simply remove it as it defaults to false
+# hidden: false
+
+# In this case, we want to hide this pattern
+hidden: true
+
+# The info block of options is mandatory, it contains info about your pattern
+info:
+    # This name will be shown in the front-end
+    name: "Súlimo Boxer short"
+    # This description will be shown in the front-end
+    description: "A simple boxer short pattern for men"
+    # This handle is required for the front-end, it's used in the URLs and file paths
+    handle: "sulimo"
+    version: "0.2"
+    author: "Xhokir"
+    company: "none"
+    # Tags are used by the frontend to allow users to filter the pattern list
+    tags:
+        - menswear
+        - underwear
+        - bottom
+    # inMemoryOf is optional. It takes a name and link
+    inMemoryOf:
+        name: "Manwë Súlimo"
+        link: "http://tolkiengateway.net/wiki/Manw%C3%AB"
+
+
+# A list of languages the pattern is translated into
+languages:
+    en: "English"
+
+# A list of parts available in the pattern
+# Parts whose title starts with a leading dot will be hidden from the
+# info service and front end
+parts:
+    frontPart: "Front part"
+    backPart: "Back part"
+    beltPart: "Belt part"
+
+# The list of required measurements
+measurements:
+    hipsCircumference: 940
+    upperLegCircumference: 565
+    hipsToUpperLeg: 190
+
+options:
+    elasticWidth:
+      title: 'Elastic width'
+      description: 'Width of the elastic band you intend to use.'
+      group: 'fit'
+      type: 'measure'
+      min: 10
+      max: 70
+      default: 30
+    legBonus:
+      title: "Leg length bonus"
+      description: "Extra length to add to the legs."
+      group: "fit"
+      type: "measure"
+      min: 50
+      max: 300
+      default: 150
+    hipsEase:
+      title: "Ease around the hips"
+      description: "Extra length around the hips (complete length of fabric added around the hips)"
+      group: "fit"
+      type: "measure"
+      min: 0
+      max: 320
+      default: 160
+    legEase:
+      title: "Ease around the legs"
+      description: "Extra length around the legs (complete length of fabric added around the legs)"
+      group: "fit"
+      type: "measure"
+      min: 0
+      max: 160
+      default: 80
+    # Group other
+    sa:
+      title: "Seam allowance"
+      description: "Seam allowance"
+      type: "measure"
+      min: 0
+      max: 20
+      default: 10
+    savePaper:
+      title: "Save paper"
+      description: "Edits a simplified version with front and back on the same pattern"
+      group: "other"
+      type: "chooseOne"
+      options:
+          1: "Full pattern printed"
+          2: "Front and back together"
+      default: 2
