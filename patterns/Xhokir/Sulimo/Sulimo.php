@@ -189,15 +189,12 @@ class Sulimo extends \Freesewing\Patterns\Core\Pattern
         if($this->o('savePaper')==2){
           $pf->newPath('savePaperPath', 'M front5 L front6');
 
-          $pf->newPoint('frontBelt1',
-                      $pf->x('front1'),
-                      $pf->y('front1')+2*$this->o('elasticWidth'));
+          $pf->newPoint('frontBelt1', $pf->x('front1'), $pf->y('front2')-2*$this->o('elasticWidth'));
+          $pf->newPoint('frontBelt2', $pf->x('front6'), $pf->y('front2')-2*$this->o('elasticWidth'));
+          $pf->newPoint('frontBelt3', $pf->x('front6'), $pf->y('front2'));
+          $pf->newPoint('frontBelt4', $pf->x('front1'), $pf->y('front2'));
 
-          $pf->newPoint('frontBelt2',
-                      $pf->x('front6'),
-                      $pf->y('front6')+2*$this->o('elasticWidth'));
-
-          $pf->newPath('beltPathSavePaper','M frontBelt1 L frontBelt2');
+          $pf->newPath('beltPathSavePaper','M frontBelt1 L frontBelt2 L frontBelt3 L frontBelt4 L frontBelt1', ['class' => 'various fabric']);
         }
 
 
@@ -265,9 +262,13 @@ class Sulimo extends \Freesewing\Patterns\Core\Pattern
         $pf = $this->parts['frontPart'];
         $pf->offsetPathString('saFront1','M front1 L front2',$this->o('sa')*-1,true,['class' => 'fabric sa']);
         $pf->offsetPathString('saFront2','M front2 L front3',$this->o('sa')*-2,true,['class' => 'fabric sa']);
-        $pf->offsetPathString('saFront3','M front3 L front4 C frontControl4 frontControl5 front5 L frontfly1 L frontfly2',$this->o('sa')*-1,true,['class' => 'fabric sa']);
+        $pf->offsetPathString('saFront3','M front3 L front4 C frontControl4 frontControl5 front5 L frontfly1',$this->o('sa')*-1,true,['class' => 'fabric sa']);
+        $pf->offsetPathString('saFront4','M frontfly1 L frontfly2',$this->o('sa')*-2,true,['class' => 'fabric sa']);
 
-        $pf->newPath('saFrontJoin','M saFront1-endPoint L saFront2-startPoint M saFront2-endPoint L saFront3-startPoint M saFront3-endPoint L saFront1-startPoint',['class' => 'fabric sa']);
+        $pf->newPath('saFrontJoin','M saFront1-endPoint L saFront2-startPoint
+                                    M saFront2-endPoint L saFront3-startPoint
+                                    M saFront3-endPoint L saFront4-startPoint
+                                    M saFront4-endPoint L saFront1-startPoint',['class' => 'fabric sa']);
 
         // Button
         $pf->newPoint('buttonAnchor',
@@ -278,24 +279,30 @@ class Sulimo extends \Freesewing\Patterns\Core\Pattern
         // Title
         $pf->newPoint('titleAnchorFront',
                       ($pf->x('front1')+$pf->x('front6'))/2,
-                      ($pf->y('front1')+$pf->y('front2'))/3);
-      if($this->o('savePaper')==1){
-        $pf->addTitle('titleAnchorFront', '1/3', $this->t($pf->getTitle()), 'Cut 2');
-      }else{
-        $pf->addTitle('titleAnchorFront', '1/1', 'All in 1', 'Cut 4, but only 2 with the fly, plus the belt');
-      }
+                      ($pf->y('front1')+$pf->y('front2'))/2.5);
+
+        if($this->o('savePaper')==1){
+          $pf->addTitle('titleAnchorFront', '1/3', $this->t($pf->getTitle()), 'Cut 2');
+        }else{
+          $pf->addTitle('titleAnchorFront', '1/1', 'All in 1', 'Cut 4, but only 2 with the fly, plus the belt');
+        }
 
         // additional path for paper saving option
         if($this->o('savePaper')==2){
-          $pf->offsetPathString('sasavePaper','M front5 L front6', $this->o('sa')*-1,true,['class' => 'fabric sa']);
+          $pf->offsetPathString('beltsaSavePaper1','M frontBelt1 L frontBelt2 L frontBelt3', $this->o('sa')*1,true,['class' => 'various sa']);
+          $pf->offsetPathString('beltsaSavePaper2','M frontBelt3 L frontBelt4', $this->o('sa')*2,true,['class' => 'various sa']);
+          $pf->newPath('beltsaSavePaperLink','M beltsaSavePaper1-endPoint L beltsaSavePaper2-startPoint',['class' => 'various sa']);
+          $pf->newPath('beltsaSavePaperLink2','M beltsaSavePaper2-endPoint L beltsaSavePaper1-startPoint',['class' => 'various sa']);
 
+          $pf->offsetPathString('sasavePaper','M front5 L front6', $this->o('sa')*-1,true,['class' => 'various sa']);
 
-          $pf->newPoint('cutFold1',$pf->x('front6'),$pf->y('front6')+10);
-          $pf->newPoint('cutFold2',$pf->x('front5'),$pf->y('front5')-10);
-          $pf->newCutonfold('cutFold1','cutFold2',"Fold here to cut back part",20);
+          $pf->newPoint('cutFold1',$pf->x('front6')+$this->o('sa'),$pf->y('front6')+10);
+          $pf->newPoint('cutFold2',$pf->x('front5')+$this->o('sa'),$pf->y('front5')-10);
+          $pf->newCutonfold('cutFold1','cutFold2',"Fold here to cut back part",+20);
 
-          $pf->newWidthDimension('front1','front6',$pf->y('front1')+10,"Cut twice this distance with fabric fold on the right for the belt");
-          $pf->newHeightDimension('front1','frontBelt1',$pf->x('front1')+10,"Belt width x2");
+          $pf->newPoint('cutTwice1',$pf->x('front1'),($pf->y('frontBelt1')+$pf->y('frontBelt4'))/2);
+          $pf->newPoint('cutTwice2',$pf->x('front6')+$this->o('sa'),($pf->y('frontBelt1')+$pf->y('frontBelt4'))/2);
+          $pf->newCutonfold('cutTwice1','cutTwice2',"To cut the belt, cut twice the length on fold",0);
         }
 
 
