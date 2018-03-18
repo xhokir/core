@@ -234,11 +234,9 @@ class Sulimo extends \Freesewing\Patterns\Core\Pattern
       $p = $this->parts['beltPart'];
 
       // SEAM ALLOWANCE
-      $p->offsetPathString('saBelt0','M belt1 L belt2',$this->o('sa')*2,true,['class' => 'fabric sa']);
-      $p->offsetPathString('saBelt1','M belt2 L belt3',$this->o('sa'),true,['class' => 'fabric sa']);
-      $p->newPath('saBeltJoin1','M saBelt0-endPoint L saBelt1-startPoint',['class' => 'fabric sa']);
+      $p->offsetPathString('saBelt1','M belt1 L belt2 L belt3',$this->o('sa'),true,['class' => 'fabric sa']);
       $p->offsetPathString('saBelt2','M belt3 L belt4 ',2*$this->o('sa'),true,['class' => 'fabric sa']);
-      $p->newPath('saBeltJoin','M saBelt1-endPoint L saBelt2-startPoint M saBelt2-endPoint L saBelt0-startPoint',['class' => 'fabric sa']);
+      $p->newPath('saBeltJoin','M saBelt1-endPoint L saBelt2-startPoint M saBelt2-endPoint L saBelt1-startPoint',['class' => 'fabric sa']);
 
       // Cut on fold
       //$p->newPoint('cutAnchor',$p->x("belt1"),($p->y('belt1')+$p->y('belt4'))/2);
